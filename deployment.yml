@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fyc-backend
+  labels:
+    app: fyc-backend
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: fyc-backend
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: fyc-backend
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: fyc-backend
+ template:
+   metadata:
+     labels:
+       app: fyc-backend
+   spec:
+     containers:
+     - name: fyc-backend
+       image: fyc-backend
+       ports:
+       - containerPort: 8000
+       resources:
+        requests:
+         memory: "256Mi"
+         cpu: "250m"
+        limits:
+         memory: "512Mi"
+         cpu: "500m"
